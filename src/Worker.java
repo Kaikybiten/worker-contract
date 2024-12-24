@@ -10,7 +10,7 @@ public class Worker {
     private WorkerLevel level;
 
     private double baseSalary;
-    private List<HourContract> contracts = new LinkedList<>();
+    private List<HourContract> contracts = new ArrayList<>();
 
     public Worker(String name, Department department, WorkerLevel level, double baseSalary){
         this.name = name;
@@ -37,7 +37,11 @@ public class Worker {
         return baseSalary;
     }
     public void increaseSalary(double increase){
-        baseSalary += increase;
+        if (increase > 0){
+            baseSalary += increase;
+            return;
+        }
+        System.out.println("Increase must be positive.");
     }
 
     public Department getDepartment() {
@@ -55,7 +59,9 @@ public class Worker {
         boolean hasContract = this.contracts.remove(contract);
         if (!hasContract){
             System.out.println("Contract not found.");
+            return;
         }
+            System.out.println("Contract successfully removed.");
     }
 
     public double income(int month, int year) {
@@ -75,6 +81,6 @@ public class Worker {
     @Override
     public String toString() {
         return "\nName: " + this.name +
-                "\nDepartment: " + (this.department != null ? this.department : "No department");
+                (this.department != null ? this.department : "No department");
     }
 }

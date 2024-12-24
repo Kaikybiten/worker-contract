@@ -12,19 +12,20 @@ public class Main {
         String department = input.nextLine();
         Department dep = new Department(department);
 
-        System.out.println("Enter worker data:");
+        System.out.println("\nEnter worker data:");
 
         System.out.print("Name: ");
         String name = input.nextLine();
 
         System.out.print("Base salary: ");
         double baseSalary = input.nextDouble();
+        input.nextLine(); // Consume the newline
 
         WorkerLevel level = null;
 
         while (level == null) {
             System.out.print("Level: ");
-            String textLevel = input.next();
+            String textLevel = input.next().toUpperCase();
 
             switch (textLevel) {
                 case "JUNIOR":
@@ -46,37 +47,38 @@ public class Main {
 
         System.out.print("\nHow many contracts to this worker? ");
         int contractsQtd = input.nextInt();
-        input.nextLine();
+        input.nextLine();// Consume the newline
 
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         for (int i = 0; i < contractsQtd; i++){
             System.out.println("\nEnter contract #" + (i+1) + " data");
 
-            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             System.out.print("Date (DD/MM/YYYY): ");
             String dateInput = input.nextLine();
             LocalDate date = LocalDate.parse(dateInput, dateFormat);
 
             System.out.print("Value per hour: ");
             double valueHour = input.nextDouble();
+            input.nextLine(); // Consume the newline
 
             System.out.print("Duration (hours): ");
             int hours = input.nextInt();
-            input.nextLine();
+            input.nextLine(); // Consume the newline
 
             worker.addContract(new HourContract(date, valueHour, hours));
         }
 
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/yyyy");
+        DateTimeFormatter monthYearFormat = DateTimeFormatter.ofPattern("MM/yyyy");
         System.out.print("\nEnter month and year to calculate income (MM/YYYY): ");
         String dateInput = input.nextLine();
-        YearMonth date = YearMonth.parse(dateInput, dateFormat);
+        YearMonth date = YearMonth.parse(dateInput, monthYearFormat);
 
         int yearArgument = date.getYear();
         int monthArgument = date.getMonthValue();
 
         System.out.println(worker);
         double periodIncome = worker.income(monthArgument, yearArgument);
-        System.out.printf("Income for %s: %f%n", dateInput,periodIncome);
+        System.out.printf("Income for %s: %.2f%n", dateInput,periodIncome);
 
         input.close();
     }
